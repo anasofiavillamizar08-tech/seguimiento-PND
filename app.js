@@ -355,6 +355,31 @@ const dataPND = {
     ],
   },
 };
+// Datos de los indicadores (puedes tener más sectores y más indicadores)
+const dataPND = {
+  educativo: {
+    indicadores: [
+      {
+        titulo: "Tasa de cobertura en educación superior",
+        avance: "El avance en la cobertura ha sido del 89.32%.",
+        alerta: "Se requieren más esfuerzos para mejorar la cobertura en zonas rurales.",
+        meta: "Meta: 90% de cobertura",
+      },
+      {
+        titulo: "Tasa de deserción escolar",
+        avance: "La tasa de deserción escolar ha bajado al 5%.",
+        alerta: "En algunas regiones sigue siendo alta.",
+        meta: "Meta: Reducir la deserción a 3%",
+      },
+      // Puedes añadir más indicadores aquí
+    ],
+  },
+  // Otros sectores pueden ser añadidos de manera similar
+};
+
+
+
+
 /* ================= TARJETAS DE INDICADORES ================= */
 function renderCards(sectorKey, containerId, lista) {
   const root = document.getElementById(containerId);
@@ -367,6 +392,7 @@ function renderCards(sectorKey, containerId, lista) {
     const keyAv = `${sectorKey}-ind-${idx}-avance`;
     const keyAl = `${sectorKey}-ind-${idx}-alerta`;
 
+    // Crear la tarjeta del indicador
     const card = document.createElement("div");
     card.className = "ind-card";
     card.innerHTML = `
@@ -374,15 +400,17 @@ function renderCards(sectorKey, containerId, lista) {
         ${ind.titulo || ind.label}
       </div>
       <div class="ind-meta" data-editable="${keyMeta}">
-        ${ind.meta || ""}
+        ${ind.meta || "Meta no definida"}
       </div>
       <div class="ind-tabs">
         <button class="ind-btn active" data-tab="avance_${idx}">Avances</button>
         <button class="ind-btn" data-tab="alerta_${idx}">Alertas</button>
       </div>
+      <!-- Caja de texto para el avance -->
       <div class="ind-body avance" data-body="avance_${idx}" data-editable="${keyAv}">
         ${ind.avance || "Texto del avance predefinido."}
       </div>
+      <!-- Caja de texto para la alerta -->
       <div class="ind-body alerta" data-body="alerta_${idx}" data-editable="${keyAl}" style="display:none;">
         ${ind.alerta || "Texto de la alerta predefinido."}
       </div>
@@ -390,7 +418,7 @@ function renderCards(sectorKey, containerId, lista) {
     root.appendChild(card);
   });
 
-  // Tabs Avances / Alertas dentro de cada tarjeta
+  // Función para alternar entre las secciones de Avance y Alerta
   root.querySelectorAll(".ind-card").forEach((card) => {
     const btns = card.querySelectorAll(".ind-btn");
     const bodies = card.querySelectorAll(".ind-body");
@@ -413,6 +441,7 @@ function renderCards(sectorKey, containerId, lista) {
     });
   });
 }
+
 /* ================= HELPERS GRÁFICAS ================= */
 let charts = {};
 
@@ -745,4 +774,8 @@ document.querySelectorAll(".chart-refresh").forEach((btn) => {
     const fn = chartReloadMap[id];
     if (typeof fn === "function") fn();
   });
+});
+// Ejecutar la función cuando la página se carga
+document.addEventListener("DOMContentLoaded", () => {
+  renderCards('edu', 'eduIndicators', dataPND.educativo.indicadores);
 });
