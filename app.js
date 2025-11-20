@@ -374,25 +374,21 @@ function renderCards(sectorKey, containerId, lista) {
         ${ind.titulo || ind.label}
       </div>
       <div class="ind-meta" data-editable="${keyMeta}">
+        ${ind.meta || ""}
       </div>
       <div class="ind-tabs">
         <button class="ind-btn active" data-tab="avance_${idx}">Avances</button>
         <button class="ind-btn" data-tab="alerta_${idx}">Alertas</button>
       </div>
       <div class="ind-body avance" data-body="avance_${idx}" data-editable="${keyAv}">
-        <!-- Contenido de avance -->
+        ${ind.avance || "Texto del avance predefinido."}
       </div>
       <div class="ind-body alerta" data-body="alerta_${idx}" data-editable="${keyAl}" style="display:none;">
-        <!-- Contenido de alerta -->
+        ${ind.alerta || "Texto de la alerta predefinido."}
       </div>
     `;
     root.appendChild(card);
   });
-
-  // Recuperar texto que ya escribiste (si usas localStorage o algún otro mecanismo de persistencia)
-  loadEditableFromStorage();
-  bindEditableInputs();
-  applyEditMode();
 
   // Tabs Avances / Alertas dentro de cada tarjeta
   root.querySelectorAll(".ind-card").forEach((card) => {
@@ -403,9 +399,7 @@ function renderCards(sectorKey, containerId, lista) {
       btn.addEventListener("click", () => {
         // Cambiar la clase activa en los botones
         btns.forEach((b) => b.classList.remove("active"));
-        bodies.forEach((b) => {
-          b.style.display = "none";  // Ocultamos todas las secciones
-        });
+        bodies.forEach((b) => (b.style.display = "none"));
         btn.classList.add("active");
         
         // Mostrar la sección correspondiente (Avance o Alerta)
@@ -419,7 +413,6 @@ function renderCards(sectorKey, containerId, lista) {
     });
   });
 }
-
 /* ================= HELPERS GRÁFICAS ================= */
 let charts = {};
 
