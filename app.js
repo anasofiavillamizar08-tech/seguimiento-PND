@@ -24,64 +24,6 @@ tabs.forEach((tab) => {
   });
 });
 
-/* ================= MODO EDICIÓN ================= */
-let editMode = false;
-const toggleBtn = document.getElementById("toggleEdit");
-const editPanels = document.querySelectorAll(".edit-panel");
-const EDIT_PREFIX = "pnd_";
-
-function loadEditableFromStorage() {
-  document.querySelectorAll("[data-editable]").forEach((el) => {
-    const key = EDIT_PREFIX + el.dataset.editable;
-    const saved = localStorage.getItem(key);
-    if (saved !== null) el.innerHTML = saved;
-  });
-}
-
-function bindEditableInputs() {
-  document.querySelectorAll("[data-editable]").forEach((el) => {
-    if (el.dataset.bound === "1") return;
-    el.dataset.bound = "1";
-    el.addEventListener("input", () => {
-      const key = EDIT_PREFIX + el.dataset.editable;
-      localStorage.setItem(key, el.innerHTML);
-    });
-  });
-}
-
-function applyEditMode() {
-  document.querySelectorAll("[data-editable]").forEach((el) => {
-    el.contentEditable = editMode;
-    el.classList.toggle("editable-on", editMode);
-  });
-  editPanels.forEach((p) => (p.style.display = editMode ? "flex" : "none"));
-}
-
-// Si estás en GitHub Pages, desactiva edición para el público
-const isPublicHost =
-  typeof window !== "undefined" &&
-  (window.location.hostname.includes("github.io") ||
-    window.location.hostname.includes("netlify.app") ||
-    window.location.hostname.includes("vercel.app"));
-
-if (toggleBtn) {
-  if (isPublicHost) {
-    // Versión pública: sin edición
-    editMode = false;
-    toggleBtn.textContent = "Edición deshabilitada";
-    toggleBtn.disabled = true;
-    toggleBtn.classList.add("btn-disabled");
-    applyEditMode();
-  } else {
-    // Versión local (VSC / Live Server): modo edición normal
-    toggleBtn.addEventListener("click", () => {
-      editMode = !editMode;
-      toggleBtn.textContent = editMode ? "Desactivar" : "Activar";
-      applyEditMode();
-    });
-  }
-}
-
 /* ================= FOTO GENERAL ================= */
 const photoInput = document.getElementById("photoInput");
 const generalPhoto = document.getElementById("generalPhoto");
@@ -755,10 +697,6 @@ function initAll() {
   loadTerr();
 
   loadGeneralPhoto();
-  loadEditableFromStorage();
-  bindEditableInputs();
-  applyEditMode();
-
   loadConsejeroPhotos();
   bindConsejeroPhotoInputs();
 }
