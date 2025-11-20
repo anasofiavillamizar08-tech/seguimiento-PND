@@ -356,7 +356,6 @@ const dataPND = {
   },
 };
 /* ================= TARJETAS DE INDICADORES ================= */
-// Función renderCards actualizada con el manejo de las pestañas Avance/Alerta
 function renderCards(sectorKey, containerId, lista) {
   const root = document.getElementById(containerId);
   if (!root || !lista) return;
@@ -404,7 +403,9 @@ function renderCards(sectorKey, containerId, lista) {
       btn.addEventListener("click", () => {
         // Cambiar la clase activa en los botones
         btns.forEach((b) => b.classList.remove("active"));
-        bodies.forEach((b) => (b.style.display = "none"));
+        bodies.forEach((b) => {
+          b.style.display = "none";  // Ocultamos todas las secciones
+        });
         btn.classList.add("active");
         
         // Mostrar la sección correspondiente (Avance o Alerta)
@@ -412,7 +413,7 @@ function renderCards(sectorKey, containerId, lista) {
         const targetBody = card.querySelector(`[data-body="${target}"]`);
         
         if (targetBody) {
-          targetBody.style.display = "block"; // Asegúrate de que se muestre
+          targetBody.style.display = "block";  // Asegúrate de que se muestre la sección activa
         }
       });
     });
