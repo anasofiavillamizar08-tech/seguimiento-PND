@@ -517,6 +517,18 @@ canvas{
   border-color:rgba(206,17,38,.25);
   color:#991b1b;
   display:none;
+  .ind-body {
+  display: none;  /* Por defecto, ocultamos las secciones */
+}
+
+.ind-body.active {
+  display: block;  /* Solo mostramos la sección activa */
+}
+
+.ind-btn.active {
+  background-color: #fcd116; /* Resalta el botón activo */
+}
+
 }
 
 /* Comentarios y recomendaciones */
