@@ -355,7 +355,6 @@ const dataPND = {
     ],
   },
 };
-
 /* ================= TARJETAS DE INDICADORES ================= */
 function renderCards(sectorKey, containerId, lista) {
   const root = document.getElementById(containerId);
@@ -380,13 +379,17 @@ function renderCards(sectorKey, containerId, lista) {
         <button class="ind-btn active" data-tab="avance_${idx}">Avances</button>
         <button class="ind-btn" data-tab="alerta_${idx}">Alertas</button>
       </div>
-      <div class="ind-body avance" data-body="avance_${idx}" data-editable="${keyAv}"></div>
-      <div class="ind-body alerta" data-body="alerta_${idx}" data-editable="${keyAl}" style="display:none;"></div>
+      <div class="ind-body avance" data-body="avance_${idx}" data-editable="${keyAv}">
+        <!-- Aquí puedes agregar contenido estático o dinámico del avance -->
+      </div>
+      <div class="ind-body alerta" data-body="alerta_${idx}" data-editable="${keyAl}" style="display:none;">
+        <!-- Aquí puedes agregar contenido estático o dinámico de la alerta -->
+      </div>
     `;
     root.appendChild(card);
   });
 
-  // Recuperar texto que ya escribiste
+  // Recuperar texto que ya escribiste (si usas localStorage o algún otro mecanismo de persistencia)
   loadEditableFromStorage();
   bindEditableInputs();
   applyEditMode();
@@ -397,9 +400,13 @@ function renderCards(sectorKey, containerId, lista) {
     const bodies = card.querySelectorAll(".ind-body");
     btns.forEach((btn) => {
       btn.addEventListener("click", () => {
+        // Eliminar la clase activa de todos los botones
         btns.forEach((b) => b.classList.remove("active"));
+        // Ocultar todas las secciones (avances y alertas)
         bodies.forEach((b) => (b.style.display = "none"));
+        // Activar el botón actual
         btn.classList.add("active");
+        // Mostrar la sección correspondiente (Avance o Alerta)
         const target = btn.dataset.tab;
         const targetBody = card.querySelector(`[data-body="${target}"]`);
         if (targetBody) targetBody.style.display = "block";
