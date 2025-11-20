@@ -356,6 +356,7 @@ const dataPND = {
   },
 };
 /* ================= TARJETAS DE INDICADORES ================= */
+// Función renderCards actualizada con el manejo de las pestañas Avance/Alerta
 function renderCards(sectorKey, containerId, lista) {
   const root = document.getElementById(containerId);
   if (!root || !lista) return;
@@ -380,10 +381,10 @@ function renderCards(sectorKey, containerId, lista) {
         <button class="ind-btn" data-tab="alerta_${idx}">Alertas</button>
       </div>
       <div class="ind-body avance" data-body="avance_${idx}" data-editable="${keyAv}">
-        <!-- Aquí puedes agregar contenido estático o dinámico del avance -->
+        <!-- Contenido de avance -->
       </div>
       <div class="ind-body alerta" data-body="alerta_${idx}" data-editable="${keyAl}" style="display:none;">
-        <!-- Aquí puedes agregar contenido estático o dinámico de la alerta -->
+        <!-- Contenido de alerta -->
       </div>
     `;
     root.appendChild(card);
@@ -398,26 +399,24 @@ function renderCards(sectorKey, containerId, lista) {
   root.querySelectorAll(".ind-card").forEach((card) => {
     const btns = card.querySelectorAll(".ind-btn");
     const bodies = card.querySelectorAll(".ind-body");
+    
     btns.forEach((btn) => {
       btn.addEventListener("click", () => {
-        // Eliminar la clase activa de todos los botones
+        // Cambiar la clase activa en los botones
         btns.forEach((b) => b.classList.remove("active"));
-        // Ocultar todas las secciones (avances y alertas)
         bodies.forEach((b) => (b.style.display = "none"));
-        // Activar el botón actual
         btn.classList.add("active");
+        
         // Mostrar la sección correspondiente (Avance o Alerta)
         const target = btn.dataset.tab;
         const targetBody = card.querySelector(`[data-body="${target}"]`);
-        if (targetBody) targetBody.style.display = "block";
+        
+        if (targetBody) {
+          targetBody.style.display = "block"; // Asegúrate de que se muestre
+        }
       });
     });
   });
-}
-
-function setIndicatorCount(sectorKey, count) {
-  const el = document.querySelector(`[data-ind-count="${sectorKey}"]`);
-  if (el) el.textContent = count;
 }
 
 /* ================= HELPERS GRÁFICAS ================= */
